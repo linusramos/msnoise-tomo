@@ -9,7 +9,7 @@ def main(pair, bmin, bmax, show):
     PLOTDIAGR=show
     PLOTRAWDISP=0
     PLOTDISPALL=0
-    SAVEFILES=0
+    SAVEFILES=1
     if not os.path.isdir("TOMO_DISP"):
         os.makedirs("TOMO_DISP")
     db = connect()
@@ -29,6 +29,7 @@ def main(pair, bmin, bmax, show):
     ampmin = float(get_config(db, "ftan_ampmin", plugin="Tomo"))
 
     db = connect()
+    components_to_compute = get_components_to_compute(db)
 
     while is_next_job(db, jobtype='TOMO_FTAN') or pair:
         SACfilelist = []
@@ -42,8 +43,12 @@ def main(pair, bmin, bmax, show):
                 # SACfilelist.append(fn)
                 # fn = os.path.join("TOMO_SAC", "%s_%s_REAL.SAC"%(netsta2.replace('.','_'), netsta1.replace('.','_')))
                 # SACfilelist.append(fn)
-                fn = os.path.join("TOMO_SAC", "%s_%s_MEAN.sac"%(netsta1.replace('.','_'), netsta2.replace('.','_')))
-                SACfilelist.append(fn)
+                for f in get_filters(db, all=False):
+                    for components in components_to_compute:
+                        filterid = int(f.ref)
+                        fn = os.path.join("TOMO_SAC","%02i" % filterid, components, "%s_%s_MEAN.sac"%(netsta1.replace('.','_'), netsta2.replace('.','_')))
+                        SACfilelist.append(fn)
+                break
         else:
             for pi in pair:
                 netsta1, netsta2 = pi.split('_')
@@ -51,8 +56,11 @@ def main(pair, bmin, bmax, show):
                 # SACfilelist.append(fn)
                 # fn = os.path.join("TOMO_SAC", "%s_%s_REAL.SAC"%(netsta2.replace('.','_'), netsta1.replace('.','_')))
                 # SACfilelist.append(fn)
-                fn = os.path.join("TOMO_SAC", "%s_%s_MEAN.sac"%(netsta1.replace('.','_'), netsta2.replace('.','_')))
-                SACfilelist.append(fn)
+                for f in get_filters(db, all=False):
+                    for components in components_to_compute:
+                        filterid = int(f.ref)
+                        fn = os.path.join("TOMO_SAC","%02i" % filterid, components, "%s_%s_MEAN.sac"%(netsta1.replace('.','_'), netsta2.replace('.','_')))
+                        SACfilelist.append(fn)
                 break
             pair = None
         print(SACfilelist)

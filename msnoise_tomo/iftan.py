@@ -7,7 +7,8 @@ import shutil
 import glob
 import random
 
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+#from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
@@ -282,9 +283,9 @@ def main():
     ttk.Button(mainframe, text="Save", command=save,
                style='My.TButton').grid(column=2, row=14, sticky=W)
 
-    toolbar = NavigationToolbar2TkAgg(canvas, mainframe)
-    toolbar.update()
-    toolbar.grid(column=3, row=14, columnspan=1, sticky=W)
+    #toolbar = NavigationToolbar2TkAgg(canvas, mainframe)
+    #toolbar.update()
+    #toolbar.grid(column=3, row=14, columnspan=1, sticky=W)
     # canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=0)
 
     def onclick(event):

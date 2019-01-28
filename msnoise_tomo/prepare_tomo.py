@@ -7,7 +7,7 @@ def main():
     for station1, station2 in get_station_pairs(db, used=True):
         sta1 = "%s.%s" % (station1.net, station1.sta)
         sta2 = "%s.%s" % (station2.net, station2.sta)
-        pair = "%s_%s_MEAN.csv" % (sta1, sta2)
+        pair = "%s_%s_MEAN.sac.csv" % (sta1, sta2)
         fn = os.path.join("TOMO_DISP", pair)
         if not os.path.isfile(fn):
             continue
@@ -20,7 +20,7 @@ def main():
     if not os.path.isdir("TOMO_FILES"):
         os.makedirs("TOMO_FILES")
 
-    PER= get_config(db, "ftan_periods", plugin="Tomo")
+    PER = get_config(db, "ftan_periods", plugin="Tomo")
     PER = np.array([float(pi) for pi in PER.split(',')])
     for per in PER:
         tmp = alldf.loc[per].to_frame()
